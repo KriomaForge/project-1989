@@ -60,3 +60,46 @@
 .retro-tile-icon:has(img){min-height:78px}
 @media(max-width:600px){.match-timeline{max-height:180px;grid-template-columns:1fr 1fr}.timeline-item{min-height:62px;padding:7px}.timeline-item small{font-size:10px}.match-focus{min-height:145px;max-height:200px}.retro-pixel-art{height:62px}.retro-tile-icon:has(img){min-height:62px}.retro-menu-shell{padding:9px}}
 @media(max-width:400px){.match-timeline{grid-template-columns:1fr}.retro-tile{min-height:115px}.retro-tile-icon:has(img){min-height:56px}}
+
+/* v1.6.1: compact unread badges point to the correct correspondence category. */
+.book-unread{display:inline-flex;align-items:center;justify-content:center;min-width:1.25em;height:1.25em;padding:0 .25em;margin-left:.3em;border-radius:2px;background:#f0ce75;color:#132b47;font-weight:800;font-size:.82em;vertical-align:middle}
+
+/* v1.8: score, match clock, pixel pitch and commentary visible together. */
+.match-clock-main{text-align:center;font:900 clamp(17px,2.1vw,25px)/1.25 'Courier New',monospace;letter-spacing:.12em;color:#f6d782;background:#0a2118;padding:8px;margin:4px 0 7px;border-bottom:2px solid #ba9c54}
+.match-replay-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,1fr);align-items:stretch;gap:12px;margin:12px 0}
+.match-replay-grid .retro-broadcast{margin:0;min-width:0}
+.match-replay-grid .match-focus{margin:0;max-height:none;min-height:230px;justify-content:center;padding:16px}
+.match-replay-grid .match-focus p{font-size:clamp(13px,1.5vw,18px)}
+.scout-assessment{font:11px/1.4 'Courier New',monospace;color:#233b61;border-left:3px solid #c19142;padding:2px 9px;margin:7px 0}.scout-assessment p{margin:3px 0}
+@media(max-width:860px){.match-replay-grid{grid-template-columns:1fr}.match-replay-grid .match-focus{max-height:200px;min-height:130px}}
+
+/* v1.8.2: characterful staff descriptions; notebook dimensions are preserved. */
+.staff-description{margin:6px 0 12px;border-left:3px solid #b78731;padding:4px 8px;background:#e1d5b6;color:#243b5e;font:12px/1.5 Georgia,serif;}
+
+/* v1.8.5: period accountancy report and readable career record */
+.accountant-report{background:#e9dec1;color:#243a5b;border:5px double #2b4c79;padding:17px 20px;margin-bottom:20px;box-shadow:inset 0 0 0 1px #a9a089}
+.accountant-heading{font:700 14px/1.5 'Courier New',monospace;letter-spacing:.09em;color:#1c3970;border-bottom:1px solid #7c8ba0;padding-bottom:7px}
+.accountant-verdict{font:italic 17px/1.65 Georgia,serif;margin:13px 0;color:#203450}
+.accountant-report small{font:11px/1.5 'Courier New',monospace;color:#52627d}
+.career-table{font-variant-numeric:tabular-nums}
+.career-table th:not(:first-child),.career-table td:not(:first-child){text-align:right}
+
+/* Club shirt colours: compact, accessible swatches alongside the existing text labels. */
+.club-label{display:inline-flex;align-items:center;gap:.42rem;vertical-align:middle;white-space:normal}
+.club-colour-swatch{display:inline-block;flex:none;width:17px;height:17px;border:1px solid #8c957f;box-shadow:inset 0 0 0 1px #0005;border-radius:2px}
+.big-score .club-colour-swatch{width:21px;height:21px}
+
+/* v1.9.1: the existing notebook idiom extends to fixtures and accountant records. */
+.record-spread{margin-top:12px;margin-bottom:22px}.record-spread .book-page{font-family:'Courier New',ui-monospace,monospace}.record-spread .accountant-report{background:transparent;border:0;box-shadow:none;padding:12px 0}.record-spread .accountant-verdict{font-family:Georgia,serif;font-style:italic;color:#152946;line-height:1.5}.record-spread .accountant-heading{color:#1b3a76}.record-spread .book-note{font-family:'Courier New',monospace}.record-spread .book-note li{margin-bottom:12px}.record-spread .book-foot button{white-space:normal}.record-spread .fixture-book-list{margin-top:14px}.record-spread .fixture-book-list table{font:700 11px/1.35 'Courier New',monospace;color:#22395e;min-width:430px}.record-spread .fixture-book-list th{color:#193974;background:#e0d1ae}.record-spread .fixture-book-list td{border-bottom:1px dotted #b5a98c;padding:7px 5px;color:#18345e}.record-spread .fixture-book-list tr.me{background:#ddcea6}.record-spread select{background:#f5edd8;color:#22375b;border:1px solid #7a87a0;font:700 12px 'Courier New',monospace}.record-spread .book-page .controls{display:flex;flex-wrap:wrap}.record-spread .book-page .controls button{font:700 11px 'Courier New',monospace;white-space:normal}.record-spread .accountant-report small{color:#576376}@media(max-width:770px){.record-spread .fixture-book-list table{min-width:380px}}
+
+/* v1.9.2: new-game options; notebook design unchanged. */
+.career-mode-choice{background:#172f25;border:1px solid #9ba877;padding:14px;margin:16px 0;display:grid;gap:8px}
+.career-mode-choice label{font:800 13px 'Courier New',monospace;color:#f2d78b;letter-spacing:.08em}
+.career-mode-choice select{max-width:100%;width:100%;font:700 13px 'Courier New',monospace}
+.modehelp{font:13px/1.5 'Courier New',monospace;color:#dce7cb;margin:0}
+.game-world-banner{font:700 11px 'Courier New',monospace;letter-spacing:.07em}
+/* Tie the records subtitle to the same old typewriter family as the notebook. */
+.record-spread + .desk-caption,.desk-caption:has(+ .record-spread){font-family:'Courier New',ui-monospace,monospace}
+
+/* v1.9.6: selectable league club names and read-only squad inspection */
+.league-club-link{display:inline-flex;align-items:center;gap:.3rem;background:transparent;border:0;padding:.25rem;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;text-decoration:underline;text-decoration-color:#608c52;text-underline-offset:3px;cursor:pointer}.league-club-link:hover,.league-club-link:focus-visible{color:#ffdf83;outline:2px solid #ffdf83;outline-offset:2px}.club-squad-table th:nth-child(n+3),.club-squad-table td:nth-child(n+3){text-align:right}

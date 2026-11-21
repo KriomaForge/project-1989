@@ -1,0 +1,8 @@
+# v1.9.7 — Real-names 1989–90 season preview
+
+Historical full-season and opening-day-candidate modes now available. Pilot CSV data for Liverpool (30), Aston Villa (23), Arsenal (28), Tottenham Hotspur (32), and Everton (24) is bundled alongside the previous partial Exeter research. Import an updated 11v11 researcher CSV directly in New Game to populate additional clubs without changing game code. Import stays on your own computer. Uncovered squad places use generated players. DOB is used for starting ages; skills/potential are fictional balance estimates. A club-history date is only a candidate indicator, not registration certification. No historical transfers are automatically scheduled. Existing careers are not altered. Source data use/republication requires rights review before public distribution.
+
+### How to use an expanded research CSV
+Select New Game → Historical Full-Season or Opening-Day Candidates → choose a local `football_league_1989_90_v2.csv` / `players_audited.csv` in the optional CSV selector → confirm the imported row count → choose club → Start. The CSV is parsed locally in the browser and never uploaded. Names and DOBs are used for **new** careers only; CSV research is not included in save files as a separate dataset, but player attributes are saved. A 92-club CSV can be imported with the same control. Missing positions/teams are skipped and original generated players remain. To prevent historical data being misrepresented, neither mode claims certified opening-day registers.
+
+**Distribution**: The supplied historical pilot was prepared from user-provided research for local testing. Confirm applicable third-party database permissions before publishing compiled player records in a public game repository.

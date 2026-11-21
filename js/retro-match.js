@@ -10,7 +10,7 @@ export function scenePlan(match,event){
  const type=['goal','chance','yellow','injury','kickoff','halftime','fulltime'].includes(event.type)?event.type:'chance';
  const minute=clamp(Number(event.minute)||0,0,90);
  const variant=(minute*17 + (Number(event.team)||0)*7 + (Number(match.seed)||0))>>>0;
- return {type,minute,attacking,variant,goal:type==='goal',isAction:type==='goal'||type==='chance'};
+ return {type,minute,attacking,variant,homeShirt:match.homeShirt||['#c42b35','#ffffff'],goal:type==='goal',isAction:type==='goal'||type==='chance'};
 }
 export function stopRetroScene(){if(running){running.cancelled=true;if(running.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(running.raf);running=null;}}
 function rect(ctx,x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
@@ -26,7 +26,7 @@ function drawPitch(ctx){
 function pixelPlayer(ctx,x,y,shirt,skin='#ebad78',keeper=false){
  const px=Math.round(x),py=Math.round(y);
  rect(ctx,px-3,py-14,7,3,'#171e18');rect(ctx,px-3,py-12,7,5,skin);
- rect(ctx,px-5,py-6,11,8,shirt);rect(ctx,px-7,py-4,2,7,skin);rect(ctx,px+6,py-4,2,7,skin);
+ if(Array.isArray(shirt)){rect(ctx,px-5,py-6,6,8,shirt[0]);rect(ctx,px+1,py-6,5,8,shirt[1]||shirt[0]);}else rect(ctx,px-5,py-6,11,8,shirt);rect(ctx,px-7,py-4,2,7,skin);rect(ctx,px+6,py-4,2,7,skin);
  rect(ctx,px-4,py+2,3,7,'#191b27');rect(ctx,px+2,py+2,3,7,'#191b27');
  rect(ctx,px-5,py+9,4,2,'#e9e3c4');rect(ctx,px+2,py+9,4,2,'#e9e3c4');
  if(keeper)rect(ctx,px-6,py-6,13,3,'#e4ce6f');
@@ -41,7 +41,7 @@ function paint(ctx,p,progress,scoreText){
  const lane=[67,89,108][p.variant%3];
  const ax=tx(mix(125,242,run)),ay=mix(lane,90,run*.48);
  const bx=tx(84),cx=tx(116),dx=tx(164);
- const attack='#f0d36e',defend='#e5e8f5';
+ const attack=isRight?p.homeShirt:['#f3f3ef','#f3f3ef'],defend=isRight?['#f3f3ef','#f3f3ef']:p.homeShirt;
  pixelPlayer(ctx,bx,51,attack);pixelPlayer(ctx,cx,130,attack);pixelPlayer(ctx,ax,ay,attack);
  pixelPlayer(ctx,tx(176),56,defend);pixelPlayer(ctx,tx(210),130,defend);pixelPlayer(ctx,tx(255),90,defend);
  // keeper shifts toward the shot; no random teleporting ball.
@@ -63,7 +63,7 @@ export function drawRetroScene(canvas,match,event){
  stopRetroScene();if(!canvas?.getContext||!match||!event)return;
  const ctx=canvas.getContext('2d');if(!ctx)return;
  const p=scenePlan(match,event);
- const scoreText=`${match.hg} - ${match.ag}`;
+ const scoreText=event?.scoreText||`${match.hg} - ${match.ag}`;
  const duration=p.isAction?980:600;const state={cancelled:false,raf:null};running=state;
  if(typeof requestAnimationFrame!=='function'){paint(ctx,p,1,scoreText);return;}
  let start=null;

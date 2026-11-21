@@ -1,0 +1,93 @@
+club_id,division_1989_90,club,season_players_confirmed_in_game,opening_day_registered_squad_verified,status,source_1,research_notes
+0,1,Liverpool,0,NO,unresearched,,No verified registration-level roster in this release
+1,1,Aston Villa,16,NO,season-associated preview; opening-day unverified,https://www.11v11.com/teams/aston-villa/tab/players/season/1990/,Additional registration-date check required
+2,1,Tottenham Hotspur,0,NO,unresearched,,No verified registration-level roster in this release
+3,1,Arsenal,0,NO,unresearched,,No verified registration-level roster in this release
+4,1,Chelsea,0,NO,unresearched,,No verified registration-level roster in this release
+5,1,Everton,0,NO,unresearched,,No verified registration-level roster in this release
+6,1,Southampton,0,NO,unresearched,,No verified registration-level roster in this release
+7,1,Wimbledon,0,NO,unresearched,,No verified registration-level roster in this release
+8,1,Nottingham Forest,0,NO,unresearched,,No verified registration-level roster in this release
+9,1,Norwich City,0,NO,unresearched,,No verified registration-level roster in this release
+10,1,Queens Park Rangers,0,NO,unresearched,,No verified registration-level roster in this release
+11,1,Coventry City,0,NO,unresearched,,No verified registration-level roster in this release
+12,1,Manchester United,0,NO,unresearched,,No verified registration-level roster in this release
+13,1,Manchester City,0,NO,unresearched,,No verified registration-level roster in this release
+14,1,Crystal Palace,0,NO,unresearched,,No verified registration-level roster in this release
+15,1,Derby County,0,NO,unresearched,,No verified registration-level roster in this release
+16,1,Luton Town,0,NO,unresearched,,No verified registration-level roster in this release
+17,1,Sheffield Wednesday,0,NO,unresearched,,No verified registration-level roster in this release
+18,1,Charlton Athletic,0,NO,unresearched,,No verified registration-level roster in this release
+19,1,Millwall,0,NO,unresearched,,No verified registration-level roster in this release
+20,2,Leeds United,0,NO,unresearched,,No verified registration-level roster in this release
+21,2,Sheffield United,0,NO,unresearched,,No verified registration-level roster in this release
+22,2,Newcastle United,0,NO,unresearched,,No verified registration-level roster in this release
+23,2,Swindon Town,0,NO,unresearched,,No verified registration-level roster in this release
+24,2,Blackburn Rovers,0,NO,unresearched,,No verified registration-level roster in this release
+25,2,Sunderland,0,NO,unresearched,,No verified registration-level roster in this release
+26,2,West Ham United,0,NO,unresearched,,No verified registration-level roster in this release
+27,2,Oldham Athletic,0,NO,unresearched,,No verified registration-level roster in this release
+28,2,Ipswich Town,0,NO,unresearched,,No verified registration-level roster in this release
+29,2,Wolverhampton Wanderers,0,NO,unresearched,,No verified registration-level roster in this release
+30,2,Port Vale,0,NO,unresearched,,No verified registration-level roster in this release
+31,2,Portsmouth,0,NO,unresearched,,No verified registration-level roster in this release
+32,2,Leicester City,0,NO,unresearched,,No verified registration-level roster in this release
+33,2,Hull City,0,NO,unresearched,,No verified registration-level roster in this release
+34,2,Watford,0,NO,unresearched,,No verified registration-level roster in this release
+35,2,Plymouth Argyle,0,NO,unresearched,,No verified registration-level roster in this release
+36,2,Oxford United,0,NO,unresearched,,No verified registration-level roster in this release
+37,2,Brighton & Hove Albion,0,NO,unresearched,,No verified registration-level roster in this release
+38,2,Barnsley,0,NO,unresearched,,No verified registration-level roster in this release
+39,2,West Bromwich Albion,0,NO,unresearched,,No verified registration-level roster in this release
+40,2,Middlesbrough,0,NO,unresearched,,No verified registration-level roster in this release
+41,2,AFC Bournemouth,0,NO,unresearched,,No verified registration-level roster in this release
+42,2,Bradford City,0,NO,unresearched,,No verified registration-level roster in this release
+43,2,Stoke City,0,NO,unresearched,,No verified registration-level roster in this release
+44,3,Bristol Rovers,0,NO,unresearched,,No verified registration-level roster in this release
+45,3,Bristol City,0,NO,unresearched,,No verified registration-level roster in this release
+46,3,Notts County,0,NO,unresearched,,No verified registration-level roster in this release
+47,3,Tranmere Rovers,0,NO,unresearched,,No verified registration-level roster in this release
+48,3,Bury,0,NO,unresearched,,No verified registration-level roster in this release
+49,3,Bolton Wanderers,0,NO,unresearched,,No verified registration-level roster in this release
+50,3,Birmingham City,0,NO,unresearched,,No verified registration-level roster in this release
+51,3,Huddersfield Town,0,NO,unresearched,,No verified registration-level roster in this release
+52,3,Rotherham United,0,NO,unresearched,,No verified registration-level roster in this release
+53,3,Reading,0,NO,unresearched,,No verified registration-level roster in this release
+54,3,Shrewsbury Town,0,NO,unresearched,,No verified registration-level roster in this release
+55,3,Crewe Alexandra,0,NO,unresearched,,No verified registration-level roster in this release
+56,3,Brentford,0,NO,researched source located; not integrated,https://en.wikipedia.org/wiki/1989%E2%80%9390_Brentford_F.C._season,Source distinguishes 1989 and 1990 signings; needs further dates verification
+57,3,Leyton Orient,0,NO,unresearched,,No verified registration-level roster in this release
+58,3,Mansfield Town,0,NO,unresearched,,No verified registration-level roster in this release
+59,3,Chester City,0,NO,unresearched,,No verified registration-level roster in this release
+60,3,Swansea City,0,NO,unresearched,,No verified registration-level roster in this release
+61,3,Wigan Athletic,0,NO,unresearched,,No verified registration-level roster in this release
+62,3,Preston North End,0,NO,unresearched,,No verified registration-level roster in this release
+63,3,Fulham,0,NO,unresearched,,No verified registration-level roster in this release
+64,3,Cardiff City,0,NO,unresearched,,No verified registration-level roster in this release
+65,3,Northampton Town,0,NO,unresearched,,No verified registration-level roster in this release
+66,3,Blackpool,0,NO,unresearched,,No verified registration-level roster in this release
+67,3,Walsall,0,NO,unresearched,,No verified registration-level roster in this release
+68,4,Exeter City,17,NO,season-associated preview; opening-day unverified,https://www.11v11.com/teams/exeter-city/tab/players/season/1990/,Additional registration-date check required
+69,4,Grimsby Town,0,NO,unresearched,,No verified registration-level roster in this release
+70,4,Southend United,0,NO,unresearched,,No verified registration-level roster in this release
+71,4,Stockport County,0,NO,unresearched,,No verified registration-level roster in this release
+72,4,Maidstone United,0,NO,unresearched,,No verified registration-level roster in this release
+73,4,Cambridge United,0,NO,unresearched,,No verified registration-level roster in this release
+74,4,Chesterfield,0,NO,unresearched,,No verified registration-level roster in this release
+75,4,Carlisle United,0,NO,unresearched,,No verified registration-level roster in this release
+76,4,Peterborough United,0,NO,unresearched,,No verified registration-level roster in this release
+77,4,Lincoln City,0,NO,unresearched,,No verified registration-level roster in this release
+78,4,Scunthorpe United,0,NO,unresearched,,No verified registration-level roster in this release
+79,4,Rochdale,0,NO,unresearched,,No verified registration-level roster in this release
+80,4,York City,0,NO,unresearched,,No verified registration-level roster in this release
+81,4,Gillingham,0,NO,unresearched,,No verified registration-level roster in this release
+82,4,Torquay United,0,NO,unresearched,,No verified registration-level roster in this release
+83,4,Burnley,0,NO,unresearched,,No verified registration-level roster in this release
+84,4,Hereford United,0,NO,unresearched,,No verified registration-level roster in this release
+85,4,Scarborough,0,NO,unresearched,,No verified registration-level roster in this release
+86,4,Hartlepool United,0,NO,unresearched,,No verified registration-level roster in this release
+87,4,Doncaster Rovers,0,NO,unresearched,,No verified registration-level roster in this release
+88,4,Wrexham,0,NO,unresearched,,No verified registration-level roster in this release
+89,4,Aldershot,0,NO,unresearched,,No verified registration-level roster in this release
+90,4,Halifax Town,0,NO,unresearched,,No verified registration-level roster in this release
+91,4,Colchester United,0,NO,unresearched,,No verified registration-level roster in this release

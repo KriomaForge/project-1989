@@ -27,7 +27,7 @@ test('existing career opens Manager Notebook without blank screen', async () => 
    assert.match(target.innerHTML,/icon-match.svg/);
    handlers.click({target:{closest:()=>({dataset:{nav:'notebook'}})}});
    // Every tab must render without a runtime ReferenceError.
-   for(const tab of ['home','manager','squad','league','fixtures','cups','review','transfers','finances','match','shots','save','notebook']) {
+   for(const tab of ['home','manager','squad','league','fixtures','cups','review','transfers','finances','staff','match','shots','save','notebook']) {
      handlers.click({target:{closest:()=>({dataset:{nav:tab}})}});
      assert.ok(target.innerHTML.length>100, `${tab} screen must render`);
    }
@@ -53,4 +53,13 @@ test('match incidents are presented as selectable, non-growing timeline',async()
  assert.match(source,/data-incident/);assert.match(source,/class=\"match-timeline\"/);
  assert.doesNotMatch(source,/box\.lastElementChild\?\.scrollIntoView/);
  assert.doesNotMatch(source,/box\.insertAdjacentHTML\('beforeend',eventHTML/);
+});
+
+test('postbag alert is category-specific and notebook opening marks the current letter read',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const source=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
+ assert.match(source,/const POSTBAG_KINDS=\['chairman','coach','scout'\]/);
+ assert.match(source,/const count=notebookUnread\('postbag'\)/);
+ assert.match(source,/markStoryRead\(game,target.id\);commit\(\)/);
+ assert.match(source,/if\(t.dataset.book\)\{openNotebookPage\(t.dataset.book\);return;\}/);
 });

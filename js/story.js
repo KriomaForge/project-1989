@@ -91,4 +91,4 @@ export function answerStory(g,id,decision){
  }else item.outcome='Your decision has been recorded.';
  return item;
 }
-export function unreadStoryCount(g){return ensureStory(g).items.filter(x=>!x.read).length;}
+export function unreadStoryCount(g,kinds=null){return ensureStory(g).items.filter(x=>!x.read&&(!kinds||kinds.includes(x.kind))).length;}

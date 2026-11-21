@@ -1,3 +1,55 @@
+> **Current local beta: v1.8.8** — corrected home/away scheduling for new seasons, practical accountant guidance and clearer finance ledger entries. Existing saves retain their fixtures and history.
+
+### v1.8.5 — Career records and financial advice
+
+The Manager's Office now tracks actual match results by club, manager achievements, and record purchases and sales. Tracking starts with this version for older saves; older completed club league tables are shown separately when available and not falsely labelled as a personal managerial record. The Finances screen includes Margaret Ellis, the permanent accountant, whose reports derive from club income, expenses, overdraft and recent operating results. Appoint or replace the assistant manager, scout, or physiotherapist through Manager's Office → Backroom Staff (also via Finances or Chairman's Notebook). The accountant is not recruitable.
+
+# Latest local test build: v1.8.3 Beta 1
+
+See [release notes](RELEASE_NOTES_v1.8.3.md) for the new club finance, staff hiring and physio systems.
+
+# Project 1989 — v1.8.0 Beta 1
+
+**Player Careers, Better Scouting & Match Layout** · Local testing release · November 2026
+
+## Changes since v1.7
+
+- Players now have ages, hidden potential, experience and form, plus appearances, goals and assists. Simple stats are shown in team selection without creating a modern Football Manager-style database.
+- Played league matches influence form and morale; player age and experience have a small effect on match strength. Player morale still responds to the existing Living Notebook choices.
+- Every new season ages players and adjusts their skills according to a simple development curve: prospects may grow, older veterans may decline. Career totals persist even when season totals reset.
+- A cohort of fictional 17–20-year-old youngsters is available **without a transfer fee** at new career creation and a fresh cohort enters at the start of each new season. Weekly wages still apply.
+- The scout evaluates the user's weakest position, low morale, poor form, veterans and inexperienced lineups. The weekly shortlist prioritises improvement, potential and affordability, and explains each player's recommendation.
+- The scouting shortlist is stable for a matchweek, including when reviewing finances or transferring a player. Recommendations update after matchweeks.
+- Match Centre now places the in-game clock **above the main scoreboard**, and the pixel pitch **beside the current commentary** on desktop. Small screens stack those panels.
+
+**Not included yet:** AI clubs do not actively negotiate transfers with one another; historical 1989–90 squads are not included; and there is not yet a multi-year contract model. Youth availability is simplified (free fee, not free wages).
+
+## Save compatibility
+
+The existing **version 3 save format and browser storage key** are preserved. Old players receive deterministic ages and developmental fields when a saved career opens. Existing names, squads, transfers, results and managerial history are unchanged. New youth intakes appear when the next season begins; an existing save does not gain new youth players immediately.
+
+The new simulation affects future matches only. Export your save from the existing game before switching folders. Running on the same `localhost:8000` browser origin will reuse the existing career.
+
+## Testing
+
+All 44 Node engine/interface regression tests passed. Chromium's headless launch could not be completed here, so full interactive desktop/mobile browser verification remains outstanding.
+
+## Run locally
+
+Unzip the package, open a terminal in the `project-1989` folder, run `py -m http.server 8000` on Windows or `python3 -m http.server 8000`, then visit http://localhost:8000/.
+
+To run regression tests: `npm test`. The project is static HTML/CSS/JS: there are no runtime npm dependencies.
+
+## Publishing on GitHub Pages
+
+Upload the **contents** of `project-1989` to the repository root (where `index.html` lives), then publish `main` → `/ (root)` under Settings → Pages. Check that all asset directories are intact.
+
+## Save safety
+
+Before uploading, use Save / Load → Export Career to back up your game. After publishing, test using a new browser profile if you want a new career without replacing your existing local save.
+
+---
+
 **v1.6.1 hotfix:** Postbag unread counting fixed. Save format unchanged. Back up/export your existing career before replacing files.
 
 > **v1.2.1 hotfix:** This build restores two missing screen functions that caused v1.2.0 to display a blank screen when loading an existing career. Your existing browser save should remain compatible. Keep a backup and run a hard reload (Ctrl+F5) after replacing files.
@@ -88,3 +140,27 @@ Run `npm test` (requires Node.js). The 30 automated checks pass. The headless Ch
 
 ### Known limitations
 Match highlights remain stylised replays of events rather than a continuous tactical match simulation. Manager log records depend on what the existing saved career retained. 1989–90 cup regulations are not yet fully modelled. Match incidents and story dialogue use fictional match data and characters.
+
+
+### v1.8.1 local beta
+
+Team & Tactics has two quick selection modes: **Auto Pick Best XI** (ability only) and **Assistant Manager Pick** (a weighted mix of skill, fitness, morale, form and experience). Cup Competition stages use friendly round titles; this does not yet reproduce historical replay or two-leg rules.
+
+
+### v1.8.2 local beta
+The Coach & Scout notebook includes staff personalities. Assistant Manager Pick follows your assistant's approach; scout shortlists reflect the scout's specialty. All notebook spreads are numbered 01–16. See `RELEASE_NOTES_v1.8.2.md`.
+
+### v1.8.4 transfer money and youth intake
+Transfer funds are a separate allocation from club cash; a purchase must fit both the allocation and the chairman-approved cash/overdraft headroom. The scout now displays both limits. An existing save receives a new five-per-club youth cohort at the *next* new season, not retroactively.
+
+
+## v1.8.6 free transfers, releases and finances
+
+See [v1.8.6 release notes](RELEASE_NOTES_v1.8.6.md). Unattached players are fee-free (but require wages), releases cost ten weeks of salary, and the fictional club-economy model has been rebalanced. These changes apply to future actions and matchweeks; existing savings are not recalculated.
+
+### Old-save fixture repair (v1.9.1)
+If your existing career inherited a long run of away games, open **Fixtures → REBALANCE REMAINING FIXTURES**. Export a save first. This only reverses remaining home/away pairings where both meetings are unplayed and never changes opponents or already played matches. New careers have a balanced fixture generator.
+
+
+## v1.9.5 research status
+The 92-club evidence register is in `research/`; full dated historical player registrations remain in progress. See `HISTORICAL_RESEARCH_STATUS.md`.

@@ -32,3 +32,12 @@ test('boardroom discussion offers new distinct choices with stored consequences'
  const item=g.story.items.find(x=>x.headline==='AN INVITATION TO THE BOARDROOM');assert.ok(item);const old=g.manager.security;
  answerStory(g,item.id,'budget');assert.equal(g.manager.security,Math.min(100,old+3));assert.match(item.outcome,/financial/);
 });
+test('unread correspondence count excludes press and dressing-room stories',()=>{
+ const g=newGame();
+ assert.equal(unreadStoryCount(g,['chairman','coach','scout']),1);
+ assert.equal(unreadStoryCount(g,['press']),1);
+ const chairman=g.story.items.find(x=>x.kind==='chairman');
+ markStoryRead(g,chairman.id);
+ assert.equal(unreadStoryCount(g,['chairman','coach','scout']),0);
+ assert.equal(unreadStoryCount(g),1);
+});
