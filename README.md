@@ -1,3 +1,58 @@
+
+# Project 1989 — v1.9.8 Public Beta Update
+
+This release introduces significant improvements to gameplay, historical authenticity, and the retro football management experience.
+
+## ⚽ What's New
+
+- **Historical Squads:** Real 1989–90 player names, dates of birth, and positions, with initial coverage of Liverpool, Aston Villa, Arsenal, Tottenham, Everton, and Exeter City.
+- **Four Game Modes:**
+  - Real clubs with generated players.
+  - Historical opening-day squads (19 August 1989).
+  - Historical full-season squads (1989–90).
+  - Fictional PES-style English leagues with generated players.
+- **Individual Player Ratings:** Improved ability and potential ratings to distinguish established stars from promising youngsters.
+- **Historical CSV Import:** Import additional player research when creating a new career.
+- **Club Inspection:** Click any club in the league tables to view its squad, abilities, ages, and statistics.
+- **Fixture Improvements:** More balanced scheduling and a fixture-rebalancing option.
+- **Manager's Notebook:** Fixtures and finances now use the classic two-page notebook presentation.
+
+## 🔧 Bug Fixes & Improvements
+
+- Fixed the Season Review screen.
+- Added a dedicated **New Game** navigation option.
+- Corrected historical player ages using verified birth dates where available.
+- Fixed mixed player positions such as DF/MF.
+- Corrected identical historical player skill ratings.
+- Improved board expectations for reigning league champions.
+- Updated save/load guidance.
+- Maintained compatibility with existing saved careers.
+
+## 🧪 Testing
+
+- **110 automated tests passed.**
+- JavaScript syntax and ZIP integrity checks passed.
+- Further real-world browser testing is ongoing.
+
+## 📋 Development Status
+
+**Version 1.9.8 is a public beta.**
+
+Historical squad coverage remains incomplete, and player ability and potential ratings are gameplay estimates rather than historical measurements.
+
+Existing saves remain compatible. New historical squad data applies when starting a new career.
+
+## 🚀 Play Project 1989
+
+**[Play Online](https://kriomaforge.github.io/project-1989/)**
+
+**[Source Code & Bug Reports](https://github.com/KriomaForge/project-1989/issues)**
+
+---
+
+*Project 1989 is an independently developed retro football management game inspired by the classics of the late 1980s.*
+
+
 > **Current local beta: v1.8.8** — corrected home/away scheduling for new seasons, practical accountant guidance and clearer finance ledger entries. Existing saves retain their fixtures and history.
 
 ### v1.8.5 — Career records and financial advice
