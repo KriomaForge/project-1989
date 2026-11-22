@@ -10,12 +10,12 @@ export function scenePlan(match,event){
  const type=['goal','chance','yellow','injury','kickoff','halftime','fulltime'].includes(event.type)?event.type:'chance';
  const minute=clamp(Number(event.minute)||0,0,90);
  const variant=(minute*17 + (Number(event.team)||0)*7 + (Number(match.seed)||0))>>>0;
- return {type,minute,attacking,variant,homeShirt:match.homeShirt||['#c42b35','#ffffff'],goal:type==='goal',isAction:type==='goal'||type==='chance'};
+ return {venue:match.venue||'THE FOOTBALL GROUND',night:!!match.night,groundSnapshot:match.groundSnapshot||{},type,minute,attacking,variant,homeShirt:match.homeShirt||['#c42b35','#ffffff'],goal:type==='goal',isAction:type==='goal'||type==='chance'};
 }
 export function stopRetroScene(){if(running){running.cancelled=true;if(running.raf&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(running.raf);running=null;}}
 function rect(ctx,x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
 function line(ctx,a,b,c,d,color,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(Math.round(a)+.5,Math.round(b)+.5);ctx.lineTo(Math.round(c)+.5,Math.round(d)+.5);ctx.stroke();}
-function drawPitch(ctx){
+function drawPitch(ctx,p){
  for(let i=0;i<8;i++)rect(ctx,0,i*23,320,23,i%2?'#237d3e':'#288a43');
  ctx.strokeStyle='#cce6a6';ctx.lineWidth=1;ctx.strokeRect(9.5,8.5,301,163);line(ctx,160,9,160,171,'#cce6a6');
  ctx.beginPath();ctx.arc(160,90,23,0,Math.PI*2);ctx.stroke();ctx.strokeRect(9.5,48.5,45,83);ctx.strokeRect(265.5,48.5,45,83);
@@ -33,8 +33,22 @@ function pixelPlayer(ctx,x,y,shirt,skin='#ebad78',keeper=false){
 }
 function ball(ctx,x,y){rect(ctx,x-2,y-2,5,5,'#fdf9d7');rect(ctx,x,y,2,2,'#161f19');}
 function board(ctx,p,scoreText){rect(ctx,0,0,320,18,'#081c19');rect(ctx,2,2,316,14,'#15292a');ctx.font='bold 8px monospace';ctx.fillStyle='#e9d183';ctx.fillText(`${String(p.minute).padStart(2,'0')}'  ${p.type.toUpperCase()}`,8,12);ctx.fillStyle='#d9ebcb';ctx.fillText(scoreText,210,12);}
+function stadiumAtmosphere(ctx,p){
+ const levels=p.groundSnapshot?.levels||{},night=p.night;
+ // Low pixel terraces around the top and bottom of the original pitch; no effect on simulation.
+ rect(ctx,0,18,320,9,night?'#142333':'#5c6060');
+ for(let i=0;i<40;i++){rect(ctx,i*8,20,5,3,i%4===0?'#d9cc9c':i%3===0?'#b54844':'#79786a');}
+ rect(ctx,0,166,320,14,night?'#172b36':'#7a7061');
+ for(let i=0;i<42;i++)rect(ctx,i*8,169+(i%2)*3,4,3,i%3===0?'#d9c89c':'#9f554e');
+ const roof=levels.stand?20:levels.cover?11:5;
+ rect(ctx,0,16,320,roof,night?'#343a43':'#514d49');
+ if(levels.stand){rect(ctx,0,32,320,3,'#d4c198');for(let i=0;i<16;i++)rect(ctx,i*20,23,4,10,'#c2bca5');}
+ const light=(x)=>{rect(ctx,x,1,3,16,'#5f747b');for(let j=0;j<4;j++)rect(ctx,x-5+j*4,0,4,3,night?'#ffe9a1':'#d6d4b9');};
+ if(night||levels.lights){light(20);light(298);}
+ if(night){rect(ctx,0,0,320,16,'#172331');}
+}
 function paint(ctx,p,progress,scoreText){
- ctx.clearRect(0,0,320,180);ctx.imageSmoothingEnabled=false;drawPitch(ctx);
+ ctx.clearRect(0,0,320,180);ctx.imageSmoothingEnabled=false;drawPitch(ctx,p);stadiumAtmosphere(ctx,p);
  const isRight=p.attacking,reverse=isRight?1:-1,tx=x=>isRight?x:320-x;
  // Every frame shares a recognisable attack pattern. Only the event type determines its outcome.
  const run=ease(clamp(progress*1.35,0,1)),shot=ease(clamp((progress-.49)/.43,0,1));

@@ -1,5 +1,13 @@
+import {closeManagerSeason} from './manager-world.js';
+import {archiveProgramme} from './match-programme.js';
+import {groundProfile} from './ground.js';
+import {ensureGround,groundBenefits,progressGrounds,completeSummerProjects} from './ground-development.js';
+import {ensureSupporters,crowdForecast,recordCrowdWeek} from './supporters.js';
+import {archiveSeasonEdition} from './season-edition.js';
 import {ensureStory,createWelcomeStory,weeklyStory,addStory} from './story.js';
+import {rivalryFor,managerForClub} from './football-world.js';
 import {RESEARCH_PILOT} from './research-pilot.js';
+import {HISTORICAL_1989_DATA} from './historical-1989-data.js';
 // Project 1989 v0.2 — source-informed 1989/90 clubs; fictional players and results.
 const DIV_NAMES=['First Division','Second Division','Third Division','Fourth Division'];
 export {DIV_NAMES};
@@ -12,8 +20,8 @@ export const CLUBS=DIVISIONS.flatMap((names,div)=>names.map((name,i)=>({id:DIVIS
 // Three starting worlds. Never present incomplete historic sources as a complete database.
 export const CAREER_MODES = Object.freeze({
  fictional: 'Historical clubs · Generated players',
- historical: 'Historical full-season squads · Partial real names',
- 'historical-opening': 'Historical opening-day candidates · Partial real names',
+ historical: 'Historical full-season squads · 92-club research beta',
+ 'historical-opening': 'Historical opening-day candidates · 92-club research beta',
  alternate: 'PES-inspired English leagues · PES aliases and generated clubs'
 });
 // Documented PES 5–2008 English League aliases. These names originated in later
@@ -38,29 +46,7 @@ export const PES_ALIASES=Object.freeze({
 // historical preview names receive a plainly flagged age estimate. Skill ratings
 // and potential are ALL subjective game balancing, not historical statistics.
 // Format: [DOB (or null), starting ability, potential].
-export const HISTORICAL_PLAYER_PROFILES=Object.freeze({
- 'Aston Villa':{
-  'Nigel Spink':['1958-08-08',81,83],'Lee Butler':['1966-05-30',59,70],
-  'Paul McGrath':['1959-12-04',84,85],'Derek Mountfield':['1962-11-02',79,81],
-  'Kent Nielsen':['1961-12-28',82,84],'Chris Price':['1960-03-30',72,76],
-  'Stuart Gray':['1960-04-19',75,77],'Kevin Gage':['1964-04-21',72,77],
-  'Gordon Cowans':['1958-10-27',84,84],'David Platt':['1966-06-10',85,91],
-  'Paul Birch':['1962-11-20',74,76],'Mark Blake':['1970-12-16',61,79],
-  'Tony Daley':['1967-10-18',80,88],'Ian Olney':['1969-12-17',75,84],
-  'Ian Ormondroyd':['1964-09-22',75,78],'Dwight Yorke':['1971-11-03',54,93]
- },
- 'Exeter City':{
-  'Kevin Miller':['1969-06-14',67,82],'David Walter':[null,57,65],
-  'Shaun Taylor':['1963-02-26',67,72],'Lee Rogers':[null,61,70],
-  'Richard Dryden':[null,60,68],'Gary Elkins':[null,59,69],
-  'Scott Hiley':['1968-09-27',62,82],'Jim McNichol':[null,64,68],
-  'Chris Vinnicombe':[null,65,79],'Danny Bailey':[null,66,72],
-  'Paul Batty':[null,63,71],'Mark Cooper':[null,63,70],
-  'Tom Kelly':[null,61,69],'Kevin Summerfield':[null,64,70],
-  'Steve Neville':[null,70,73],'Ian Benjamin':[null,59,71],
-  'Ben Rowe':[null,57,69]
- }
-});
+export const HISTORICAL_PLAYER_PROFILES=Object.freeze({});
 export function ageOnSeasonStart(dob,season=1989){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(dob||''))return null;
  const [year,month,day]=dob.split('-').map(Number);
@@ -81,18 +67,8 @@ export function fictionalClubNames(seed=1989){
 // Research preview: positions and season association corroborated by 11v11's
 // 1989-90 season lists. Age/skill/fitness/wages are simulated, not historical.
 // A season-long roster does NOT imply opening-day registration.
-export const HISTORICAL_PREVIEW = Object.freeze({
- 'Aston Villa': [
- ['Nigel Spink','GK'],['Lee Butler','GK'],['Paul McGrath','DEF'],['Derek Mountfield','DEF'],['Kent Nielsen','DEF'],['Chris Price','DEF'],['Stuart Gray','DEF'],['Kevin Gage','DEF'],['Gordon Cowans','MID'],['David Platt','MID'],['Paul Birch','MID'],['Mark Blake','MID'],['Tony Daley','FWD'],['Ian Olney','FWD'],['Ian Ormondroyd','FWD'],['Dwight Yorke','FWD']
- ],
- 'Exeter City': [
- ['Kevin Miller','GK'],['David Walter','GK'],['Shaun Taylor','DEF'],['Lee Rogers','DEF'],['Richard Dryden','DEF'],['Gary Elkins','DEF'],['Scott Hiley','DEF'],['Jim McNichol','DEF'],['Chris Vinnicombe','DEF'],['Danny Bailey','MID'],['Paul Batty','MID'],['Mark Cooper','MID'],['Tom Kelly','MID'],['Kevin Summerfield','MID'],['Steve Neville','FWD'],['Ian Benjamin','FWD'],['Ben Rowe','FWD']
- ]
-});
-export const HISTORICAL_SOURCES=Object.freeze({
- 'Aston Villa':'https://www.11v11.com/teams/aston-villa/tab/players/season/1990/',
- 'Exeter City':'https://www.11v11.com/teams/exeter-city/tab/players/season/1990/'
-});
+export const HISTORICAL_PREVIEW=Object.freeze({});
+export const HISTORICAL_SOURCES=Object.freeze({});
 
 export const FORMATIONS={'4-4-2':{GK:1,DEF:4,MID:4,FWD:2},'4-3-3':{GK:1,DEF:4,MID:3,FWD:3},'5-3-2':{GK:1,DEF:5,MID:3,FWD:2}};
 export function rng(seed){let s=seed>>>0;return ()=>((s=(Math.imul(s,1664525)+1013904223)>>>0)/4294967296)}
@@ -288,12 +264,13 @@ export function clubEconomy(g,c,week=g.round){
  // The old £24k top-division gate estimate was less than £1 per supporter for
  // a well-attended ground, and led to artificial insolvency of successful clubs.
  // Gate figure is NET club receipt after simplified staging costs/levies.
- const gate=homeFixtures?Math.round(72000*scale*quality*(0.82+0.36*form)):0;
- const commercial=Math.round(9500*scale*quality);
+ const crowd=crowdForecast(g,c,week);const building=groundBenefits(c);
+ const gate=homeFixtures?Math.round(72000*scale*quality*(0.82+0.36*form)*crowd.gateFactor):0;
+ const commercial=Math.round(9500*scale*quality)+(homeFixtures?Math.round(crowd.attendance*(building.facilities||0)*0.32):0);
  const success=Math.round(2200*scale*form);
  const playerWages=c.squad.reduce((sum,p)=>sum+(p.wage||0),0);
  const staffWages=c.id===g.selected?weeklyStaffWages(g):Math.round(1400*scale);
- return {gate,commercial,success,playerWages,staffWages,net:gate+commercial+success-playerWages-staffWages};
+ return {gate,commercial,success,playerWages,staffWages,groundUpkeep:building.weeklyUpkeep,attendance:crowd.attendance,capacity:crowd.capacity,gateFactor:crowd.gateFactor,net:gate+commercial+success-playerWages-staffWages-building.weeklyUpkeep};
 }
 export function seasonRevenue(g,c,tableRank){
  const tiers=[480000,240000,120000,65000],scale=[1,.7,.45,.28][c.division],rankBonus=Math.round((25-tableRank)*2500*scale);
@@ -344,11 +321,11 @@ export function toggleStarter(club,playerId,checked){const id=Number(playerId),p
 export function swapPlayers(c,onId,offId){const incoming=c.squad.find(p=>p.id===Number(onId)),outgoing=c.squad.find(p=>p.id===Number(offId));if(!incoming||!outgoing||incoming.pos!==outgoing.pos)throw Error('Choose a replacement in the same position');if(incoming.injured||!c.lineup.includes(outgoing.id)||c.lineup.includes(incoming.id))throw Error('Invalid replacement');c.lineup=c.lineup.map(id=>id===outgoing.id?incoming.id:id);return {action:'swapped',replaced:outgoing.name,added:incoming.name};}
 export function validLineup(c){if(!FORMATIONS[c.formation]||c.lineup.length!==11||new Set(c.lineup).size!==11)return false;return Object.entries(FORMATIONS[c.formation]).every(([pos,n])=>c.squad.filter(p=>c.lineup.includes(p.id)&&p.pos===pos&&!p.injured).length===n);}
 function initialiseCup(g,name){const league=g.clubs.filter(c=>c.division>=2).map(c=>c.id);let entrants=name==='FA Cup'?[...league,...Array.from({length:32},(_,i)=>-(i+1))]:[...league,...g.clubs.filter(c=>c.division===1).slice(0,8).map(c=>c.id)];return {name,stage:0,entrants,completed:[],winner:null};}
-export function newGame(selected=CLUBS.find(c=>c.name==='Exeter City').id,seed=1989,mode='fictional'){if(!Object.hasOwn(CAREER_MODES,mode))throw Error('Unknown career mode');const r=rng(seed);let pid=1;const clubs=CLUBS.map(({id,name,division})=>{const squad=[...Array.from({length:2},()=>player(pid++,'GK',r,division)),...Array.from({length:6},()=>player(pid++,'DEF',r,division)),...Array.from({length:6},()=>player(pid++,'MID',r,division)),...Array.from({length:6},()=>player(pid++,'FWD',r,division))];uniqueNames(squad,r);const c={id,name,division,squad,formation:'4-4-2',tactic:'Balanced',lineup:[],rating:rand(r,43,65)+(3-division)*5,budget:rand(r,40,150)*1000*(4-division),money:rand(r,150,500)*1000*(4-division)};c.lineup=autoLineup(c);return c;});if(mode==='alternate'){
+export function newGame(selected=CLUBS.find(c=>c.name==='Exeter City').id,seed=1989,mode='fictional'){if(mode==='historical'||mode==='historical-opening')throw Error('Historical player database requires separate distribution permission; choose a generated-player world.');if(!Object.hasOwn(CAREER_MODES,mode))throw Error('Unknown career mode');const r=rng(seed);let pid=1;const clubs=CLUBS.map(({id,name,division})=>{const squad=[...Array.from({length:2},()=>player(pid++,'GK',r,division)),...Array.from({length:6},()=>player(pid++,'DEF',r,division)),...Array.from({length:6},()=>player(pid++,'MID',r,division)),...Array.from({length:6},()=>player(pid++,'FWD',r,division))];uniqueNames(squad,r);const c={id,name,division,squad,formation:'4-4-2',tactic:'Balanced',lineup:[],rating:rand(r,43,65)+(3-division)*5,budget:rand(r,40,150)*1000*(4-division),money:rand(r,150,500)*1000*(4-division)};c.lineup=autoLineup(c);return c;});if(mode==='alternate'){
  const fictionalNames=fictionalClubNames(seed);
  for(const c of clubs){c.historicalName=c.name;c.name=fictionalNames[c.id];c.worldIdentity='generated';const palettes=[['#8b2c46','#a7c8dc'],['#2255a6','#f4e5ce'],['#b62b38','#e8dec9'],['#1a704c','#efb640'],['#e9aa31','#171f31'],['#faf7ec','#182d54'],['#653996','#f7c9a0']];c.customColours=palettes[(c.id+Math.floor(seed%7))%palettes.length];}
  }
- if(mode==='historical'||mode==='historical-opening'){
+ if((mode==='historical'||mode==='historical-opening')&&!HISTORICAL_1989_DATA.length){
   for(const c of clubs){
    const known=HISTORICAL_PREVIEW[c.name];
    c.historicalResearch={verified:known?.length||0,total:c.squad.length,source:HISTORICAL_SOURCES[c.name]||null};
@@ -372,15 +349,15 @@ export function newGame(selected=CLUBS.find(c=>c.name==='Exeter City').id,seed=1
   }
  }
  if(mode==='historical'||mode==='historical-opening'){
-  applyHistoricalResearch({clubs},RESEARCH_PILOT,mode==='historical-opening');
-  if(mode==='historical-opening'){
+  applyHistoricalResearch({clubs},HISTORICAL_1989_DATA.length?HISTORICAL_1989_DATA:RESEARCH_PILOT,mode==='historical-opening');
+  if(mode==='historical-opening'&&!HISTORICAL_1989_DATA.length){
    const lateVilla=new Set(['Dwight Yorke','Tony Cascarino','Andy Comyn']);
    const villa=clubs.find(c=>c.name==='Aston Villa');
    for(const p of villa.squad){if(lateVilla.has(p.name)){const replacement=player(p.id,p.pos,r,villa.division);Object.assign(p,replacement);}}
    villa.lineup=autoLineup(villa);
   }
  }
- const freeAgents=Array.from({length:35},(_,i)=>player(pid++,['GK','DEF','MID','FWD'][i%4],r));const g={version:3,careerMode:mode,historicalCoverage:mode.startsWith('historical')?'Research preview: 6 of 92 clubs have partial season-name coverage. Only some opening-day registrations evidenced; other players generated.':null,financeLedger:[],staffHistory:[],manager:{clubId:selected,reputation:45,security:65,employed:true,offers:[],applications:[],career:[],lastReviewWeek:-1},transferHistory:[],matchReports:[],versionLabel:'1.0',seed,selected,round:0,season:1989,status:'active',clubs,freeAgents,fixtures:[],results:[],lastMatch:null,messages:['Welcome to your club. The 1989–90 campaign begins!'],history:[],cups:{}};refreshFixtures(g);g.cups={'FA Cup':initialiseCup(g,'FA Cup'),'League Cup':initialiseCup(g,'League Cup')};ensureStaff(g);ensureCareerRecord(g);youthIntake(g);createWelcomeStory(g);return g;}
+ const freeAgents=Array.from({length:35},(_,i)=>player(pid++,['GK','DEF','MID','FWD'][i%4],r));const g={version:3,careerMode:mode,historicalCoverage:mode.startsWith('historical')?'92-club research beta: season-associated players, not certified opening-day registrations. Ability and potential are simulated; some opening-day statuses uncertain.':null,financeLedger:[],staffHistory:[],manager:{clubId:selected,reputation:45,security:65,employed:true,offers:[],applications:[],career:[],lastReviewWeek:-1},transferHistory:[],matchReports:[],versionLabel:'1.20.0',rivalryHistory:[],managerDuels:[],seed,selected,round:0,season:1989,status:'active',clubs,freeAgents,fixtures:[],results:[],lastMatch:null,messages:['Welcome to your club. The 1989–90 campaign begins!'],history:[],cups:{}};refreshFixtures(g);g.cups={'FA Cup':initialiseCup(g,'FA Cup'),'League Cup':initialiseCup(g,'League Cup')};ensureStaff(g);ensureCareerRecord(g);for(const club of g.clubs)ensureSupporters(g,club);youthIntake(g);createWelcomeStory(g);return g;}
 
 // Individual, subjective 1989 starting assessments (ability, potential).
 // Ratings are original game balancing, NOT scraped or measurable historical data.
@@ -399,19 +376,22 @@ export const HISTORICAL_RATING_OVERRIDES=Object.freeze({
   'Peter Beardsley':[88,89],'Kenny Dalglish':[70,70],
   'Wayne Harrison':[52,65],'Ian Rush':[90,90],'Ronny Rosenthal':[78,81]
  },
+ 'Tottenham Hotspur':{'Gary Lineker':[90,91],'Paul Gascoigne':[85,94]},
+ 'Arsenal':{'Alan Smith':[84,86],'David Rocastle':[84,88]},
+ 'Manchester United':{'Bryan Robson':[86,87],'Mark Hughes':[84,86]},
  'Aston Villa':{
-  'Lee Butler':[59,69],'Nigel Spink':[81,83],
+  'Lee Butler':[59,69],'Nigel Spink':[84,85],
   'Bernie Gallacher':[64,73],'Kevin Gage':[72,77],
-  'Stuart Gray':[75,77],'Paul McGrath':[84,85],
-  'Derek Mountfield':[79,81],'Kent Nielsen':[82,84],
+  'Stuart Gray':[75,77],'Paul McGrath':[88,89],
+  'Derek Mountfield':[83,84],'Kent Nielsen':[85,86],
   'Chris Price':[72,76],'Andy Comyn':[60,76],
   'Paul Birch':[74,76],'Mark Blake':[61,79],
-  'Gordon Cowans':[84,84],'Adrian Heath':[76,78],
-  'David Platt':[85,91],'Gareth Williams':[61,74],
-  'Nigel Callaghan':[72,75],'Tony Daley':[80,88],
+  'Gordon Cowans':[87,88],'Adrian Heath':[76,78],
+  'David Platt':[88,92],'Gareth Williams':[61,74],
+  'Nigel Callaghan':[72,75],'Tony Daley':[84,89],
   'Ian Olney':[75,84],'Ian Ormondroyd':[75,78],
   'Tommy Mooney':[52,78],'Dwight Yorke':[54,93],
-  'Tony Cascarino':[79,80]
+  'Tony Cascarino':[82,83]
  }
 });
 function stableNameHash(value){let h=2166136261;for(const ch of value){h=Math.imul(h^ch.charCodeAt(0),16777619)>>>0;}return h>>>0;}
@@ -450,7 +430,10 @@ export function applyHistoricalResearch(g, records, openingOnly=false){
   const departure=/^\d{4}-\d{2}-\d{2}$/.test(left);
   // A historical season appearance is not proof of opening-day registration.
   // Refuse uncertain and contradictory club spells for this stricter mode.
-  if(openingOnly&&((!hasDates&&!/^User research: opening-day candidate/.test(String(row.Registration_Status||'')))||(hasDates&&joined>cutoff)||(departure&&left<cutoff))){skipped++;continue;}
+  const youthAtOpening=(team==='Liverpool'&&name==='Steve McManaman')||(team==='Aston Villa'&&name==='Tommy Mooney');
+  // User-researched 1989 apprentice/youth records count as ordinary players.
+  // Becoming a professional later is not evidence of joining the club later.
+  if(openingOnly&&!youthAtOpening&&((!hasDates&&!/^User research: opening-day candidate/.test(String(row.Registration_Status||'')))||(hasDates&&joined>cutoff)||(departure&&left<cutoff))){skipped++;continue;}
   if(!grouped.has(team))grouped.set(team,[]);
   grouped.get(team).push({...row,Player:name,Pos:pos});
  }
@@ -470,14 +453,17 @@ export function applyHistoricalResearch(g, records, openingOnly=false){
    const numberOrNull=value=>value===undefined||value===null||String(value).trim()===''||String(value).trim()==='-'?null:(Number.isFinite(Number(value))?Number(value):null);
    const apps=numberOrNull(row.Apps),subs=numberOrNull(row.Subs),goals=numberOrNull(row.Goals);
    const estimated=estimateHistoricalRating({team:club.name,name:row.Player,pos:row.Pos,division:club.division,age,apps,subs,goals});
-   target.name=row.Player;target.pos=row.Pos;target.historicalVerified=true;
+   const importedAbility=numberOrNull(row.Historical_Ability_Estimate),importedPotential=numberOrNull(row.Historical_Potential_Estimate);
+   const isIndividual=estimated.basis==='individual 1989 assessment';
+   if(!isIndividual&&importedAbility!==null&&importedPotential!==null&&importedAbility>=20&&importedAbility<=100&&importedPotential<=100){estimated.ability=importedAbility;estimated.potential=Math.max(importedAbility,importedPotential);estimated.basis='calibrated pre-season estimate (modelled)';}
+   target.name=row.Player;target.pos=(club.name==='Liverpool'&&row.Player==='John Barnes')?'MID':row.Pos;target.historicalVerified=true;
    target.historicalSource=row.Profile_URL||row.Squad_URL||'User-supplied research';
    target.dateOfBirth=age===null?null:dob;target.ageEstimated=age===null;
    if(age!==null)target.age=age;
    target.skill=estimated.ability;target.potential=Math.max(target.skill,estimated.potential);
    target.historicalRatingBasis=estimated.basis;
    target.experience=Math.max(0,(target.age-17)*3);
-   target.historicalRegistration=openingOnly?'Opening-day candidate':'Season-associated (may be later arrival)';
+   target.historicalRegistration=openingOnly?((club.name==='Liverpool'&&row.Player==='Steve McManaman')||(club.name==='Aston Villa'&&row.Player==='Tommy Mooney')?'Youth/apprentice opening-day candidate (user research)':'Opening-day candidate (club-history evidence; not certified)'):String(row.Registration_Status||'Season-associated (may be later arrival)');
    target.historicalResearchFlag=row.QA_Flags||'';
    accepted++;
   }
@@ -537,16 +523,28 @@ const commentary={
 function eventText(type,r,player){const a=commentary[type]||commentary.chance;return a[Math.floor(r()*a.length)].replace('{player}',player||'the striker');}
 export function simulateMatch(home,away,seed){
  const r=rng(seed),h=teamStrength(home),a=teamStrength(away),delta=h.overall-a.overall;
+ // v1.9.10: compress large mismatch effects and calibrate to late-1980s league scoring.
  const homeEdge=.14;
- const chanceHome=Math.max(.16,Math.min(3.7,1.28+homeEdge+(h.attack-a.defence)*.055+(h.midfield-a.midfield)*.022));
- const chanceAway=Math.max(.16,Math.min(3.7,1.19+(a.attack-h.defence)*.055+(a.midfield-h.midfield)*.022));
+ const chanceHome=Math.max(.16,Math.min(3.7,1.19+homeEdge+(h.attack-a.defence)*.038+(h.midfield-a.midfield)*.014));
+ const chanceAway=Math.max(.16,Math.min(3.7,1.10+(a.attack-h.defence)*.038+(a.midfield-h.midfield)*.014));
  const hg=poisson(r,chanceHome),ag=poisson(r,chanceAway);
  const events=[{minute:0,team:home.id,type:'kickoff',text:eventText('kickoff',r)}];
  const goalEntries=[];
  for(const [c,n] of [[home,hg],[away,ag]])for(let i=0;i<n;i++){
   const pool=c.squad?.filter(p=>c.lineup.includes(p.id)&&p.pos!=='GK')||[];
-  const weighted=pool.flatMap(p=>Array.from({length:p.pos==='FWD'?5:p.pos==='MID'?3:1},()=>p));
-  const p=weighted.length?weighted[rand(r,0,weighted.length-1)]:null;
+  // Goals belong disproportionately to good finishers, not randomly to all forwards.
+  // Named 1989 scorers have modest role-specific finishing profiles; general
+  // players are rated using skill and role, with no future-season statistics.
+  const scoringProfile={'John Barnes':4.0,'Gary Lineker':1.8,'David Platt':3.1,'Ian Rush':1.25,'Peter Beardsley':1.0,'Steve Bull':2.1,'Alan Smith':1.5};
+  const weights=pool.map(x=>{
+   const role=x.pos==='FWD'?5:x.pos==='MID'?2.1:0.48;
+   const quality=Math.pow(Math.max(35,Math.min(99,x.skill||60))/72,2.6);
+   const named=(c.division===0||x.name==='Steve Bull')?(scoringProfile[x.name]||1):1;
+   return role*quality*named;
+  });
+  const total=weights.reduce((a,b)=>a+b,0);
+  let ticket=r()*total, p=pool.at(-1)||null;
+  for(let k=0;k<pool.length;k++){ticket-=weights[k];if(ticket<=0){p=pool[k];break;}}
   const assistOptions=pool.filter(x=>x.id!==p?.id&&x.pos!=='GK');const assist=assistOptions.length&&r()<.63?assistOptions[rand(r,0,assistOptions.length-1)]:null;
   goalEntries.push({assistId:assist?.id??null,minute:rand(r,2,89),team:c.id,type:'goal',scorer:p?.name||'Own goal',playerId:p?.id,text:eventText('goal',r,p?.name)});
  }
@@ -578,7 +576,11 @@ function progressCup(g,name){const cup=g.cups[name],stage=cup.stage;if(cup.winne
  if(winnerClub){winnerClub.money+=roundPrize;if(winnerClub.id===g.selected){g.financeLedger??=[];g.financeLedger.unshift({season:g.season,week:g.round+1,clubId:winnerClub.id,type:'CUP PRIZE',amount:roundPrize,note:`${name} · ${cupRoundName(name,stage+1)} victory`});}}
  const host=g.clubs[home];if(host){const gate=Math.round(7500*[1,.7,.48,.30][host.division]);host.money+=gate;if(host.id===g.selected){g.financeLedger??=[];g.financeLedger.unshift({season:g.season,week:g.round+1,clubId:host.id,type:'CUP GATE',amount:gate,note:`${name} · home tie`});}}
  if(result.home===g.selected||result.away===g.selected){g.messages.unshift(`${name}: ${getCupClub(g,home).name} ${result.hg}–${result.ag} ${getCupClub(g,away).name}${result.penalties?' (penalties)':''}`);g.lastCupMatch={name,competition:name,round:stage+1,weekRecorded:g.round+1,seasonRecorded:g.season,...result};g.matchReports.push(g.lastCupMatch);}}cup.completed.push({round:stage+1,matches:fixtures});cup.entrants=fixtures.map(x=>x.winner);cup.stage++;if(cup.entrants.length===1){cup.winner=cup.entrants[0];g.messages.unshift(`${name} winners: ${getCupClub(g,cup.winner).name}!`);}}
-export function advanceRound(g){if(g.status==='finished')return g;const week=g.round;for(const [i,[h,a]] of g.fixtures[week].entries()){const result=simulateMatch(g.clubs[h],g.clubs[a],g.seed+week*1009+i*7919);g.results.push(result);if(h===g.selected||a===g.selected){g.lastMatch={...result,competition:'LEAGUE',division:g.clubs[h].division,week:week+1};g.matchReports.push(g.lastMatch);}for(const e of result.events)if(e.playerId){const p=g.clubs[e.team].squad.find(p=>p.id===e.playerId);if(p){p.goals++;p.careerGoals=(p.careerGoals??0)+1;}}for(const [club,ours,theirs] of [[g.clubs[h],result.hg,result.ag],[g.clubs[a],result.ag,result.hg]]){const delta=ours>theirs?0.35:ours<theirs?-0.38:0.05;for(const p of club.squad.filter(p=>club.lineup.includes(p.id))){enrichPlayer(p,g.seed);p.appearances++;p.careerAppearances++;const scored=result.events.filter(e=>e.type==='goal'&&e.playerId===p.id).length;p.form=Math.max(3,Math.min(10,0.68*p.form+0.32*(6.4+delta+scored*1.7)));p.morale=Math.max(15,Math.min(100,p.morale+(ours>theirs?2:ours<theirs?-2:0)+(scored?3:0)));}for(const goal of result.events.filter(e=>e.type==='goal'&&e.team===club.id&&e.assistId)){const a=club.squad.find(p=>p.id===goal.assistId);if(a){a.assists=(a.assists||0)+1;a.careerAssists=(a.careerAssists||0)+1;}}}}for(const name of ['FA Cup','League Cup'])if(CUP_WEEKS[name].includes(week))progressCup(g,name);for(const c of g.clubs){const chosen=new Set(c.lineup);for(const p of c.squad){if(p.injured){p.injured--;if(c.id===g.selected&&p.injured>0&&rng(g.seed+week*12391+p.id*49)()<staffReport(g).physio.recovery)p.injured--;p.fitness=Math.min(100,p.fitness+8);}else if(chosen.has(p.id)){p.fitness=Math.max(55,p.fitness-rand(rng(g.seed+week*333+p.id),3,8));if(rng(g.seed+week*10007+p.id*97)()<.008)p.injured=rand(rng(g.seed+p.id+week),1,3);}else p.fitness=Math.min(100,p.fitness+7);}const econ=clubEconomy(g,c,week);c.money+=econ.net;if(c.id===g.selected){g.financeLedger??=[];g.financeLedger.unshift({season:g.season,week:week+1,clubId:c.id,type:'WEEKLY OPERATIONS',amount:econ.net,note:`${g.fixtures[week].some(([h])=>h===c.id)?`Home league gate £${econ.gate}`:g.fixtures[week].some(([h,a])=>a===c.id)?'Away league fixture — no home gate':'No league fixture this week'}; club income £${econ.commercial+econ.success}; player wages £${econ.playerWages}; staff wages £${econ.staffWages}`});}if(!validLineup(c))c.lineup=autoLineup(c);}
+export function advanceRound(g){if(g.status==='finished')return g;const week=g.round;for(const [i,[h,a]] of g.fixtures[week].entries()){const result=simulateMatch(g.clubs[h],g.clubs[a],g.seed+week*1009+i*7919);if(h===g.selected||a===g.selected){result.venue=groundProfile(g.clubs[h]).name;result.groundSnapshot=structuredClone(g.clubs[h].ground||{});result.night=week%5===0;result.seasonRecorded=g.season;}if(h===g.selected)archiveProgramme(g,[h,a],result);g.results.push(result);if(h===g.selected||a===g.selected){g.lastMatch={...result,competition:'LEAGUE',division:g.clubs[h].division,week:week+1};g.matchReports.push(g.lastMatch);
+  // The manager remembers every head-to-head, even when changing clubs.
+  const rivalId=h===g.selected?a:h;
+  g.managerDuels??=[];g.managerDuels.push({season:g.season,week:week+1,clubId:g.selected,opponentId:rivalId,opponentManager:managerForClub(g,rivalId).name,gf:h===g.selected?result.hg:result.ag,ga:h===g.selected?result.ag:result.hg});
+ }for(const e of result.events)if(e.playerId){const p=g.clubs[e.team].squad.find(p=>p.id===e.playerId);if(p){p.goals++;p.careerGoals=(p.careerGoals??0)+1;}}for(const [club,ours,theirs] of [[g.clubs[h],result.hg,result.ag],[g.clubs[a],result.ag,result.hg]]){const delta=ours>theirs?0.35:ours<theirs?-0.38:0.05;for(const p of club.squad.filter(p=>club.lineup.includes(p.id))){enrichPlayer(p,g.seed);p.appearances++;p.careerAppearances++;const scored=result.events.filter(e=>e.type==='goal'&&e.playerId===p.id).length;p.form=Math.max(3,Math.min(10,0.68*p.form+0.32*(6.4+delta+scored*1.7)));p.morale=Math.max(15,Math.min(100,p.morale+(ours>theirs?2:ours<theirs?-2:0)+(scored?3:0)));}for(const goal of result.events.filter(e=>e.type==='goal'&&e.team===club.id&&e.assistId)){const a=club.squad.find(p=>p.id===goal.assistId);if(a){a.assists=(a.assists||0)+1;a.careerAssists=(a.careerAssists||0)+1;}}}}const crowdNews=recordCrowdWeek(g,week,g.fixtures[week].map(([h,a])=>g.results.findLast(x=>x.home===h&&x.away===a)).filter(Boolean));for(const story of crowdNews)addStory(g,'press',story.headline,story.body);for(const name of ['FA Cup','League Cup'])if(CUP_WEEKS[name].includes(week))progressCup(g,name);for(const c of g.clubs){const chosen=new Set(c.lineup);for(const p of c.squad){if(p.injured){p.injured--;if(c.id===g.selected&&p.injured>0&&rng(g.seed+week*12391+p.id*49)()<staffReport(g).physio.recovery)p.injured--;p.fitness=Math.min(100,p.fitness+8);}else if(chosen.has(p.id)){p.fitness=Math.max(55,p.fitness-rand(rng(g.seed+week*333+p.id),3,8));if(rng(g.seed+week*10007+p.id*97)()<.008)p.injured=rand(rng(g.seed+p.id+week),1,3);}else p.fitness=Math.min(100,p.fitness+7);}ensureGround(c);const econ=clubEconomy(g,c,week);c.money+=econ.net;if(c.id===g.selected){g.financeLedger??=[];g.financeLedger.unshift({season:g.season,week:week+1,clubId:c.id,type:'WEEKLY OPERATIONS',amount:econ.net,note:`${g.fixtures[week].some(([h])=>h===c.id)?`Home league gate £${econ.gate}`:g.fixtures[week].some(([h,a])=>a===c.id)?'Away league fixture — no home gate':'No league fixture this week'}; club income £${econ.commercial+econ.success}; player wages £${econ.playerWages}; staff wages £${econ.staffWages}`});}if(!validLineup(c))c.lineup=autoLineup(c);}
  if(g.manager?.employed){
   const rec=ensureCareerRecord(g), clubId=g.manager.clubId;
   // League results are always present in g.results, regardless of which screen is open.
@@ -588,9 +590,10 @@ export function advanceRound(g){if(g.status==='finished')return g;const week=g.r
   const playedCups=(g.matchReports||[]).filter(x=>x.competition!=='LEAGUE'&&(x.home===clubId||x.away===clubId)&&x.weekRecorded===week+1&&x.seasonRecorded===g.season);
   for(const x of playedCups){const home=x.home===clubId;rec.matches.push({season:g.season,week:week+1,clubId,competition:x.competition,gf:home?x.hg:x.ag,ga:home?x.ag:x.hg});}
  }
- g.round++;updateManager(g);weeklyStory(g);if(g.round===46){g.status='finished';finishSeason(g);}g.messages.unshift(`Week ${g.round}: league fixtures completed`);return g;}
+ for(const item of progressGrounds(g)){addStory(g,'press','A NEW CHAPTER AT THE GROUND',`${item.club.name} have completed ${item.record.name.toLowerCase()}. The project has been welcomed as a sign of commitment to the club's future.`);}
+g.round++;updateManager(g);weeklyStory(g);if(g.round===46){g.status='finished';finishSeason(g);}g.messages.unshift(`Week ${g.round}: league fixtures completed`);return g;}
 function playoffWinner(g,ids,seed){const semi1=cupDecider(g,ids[0],ids[3],seed),semi2=cupDecider(g,ids[1],ids[2],seed+13),final=cupDecider(g,semi1.winner,semi2.winner,seed+91);return {winner:final.winner,matches:[semi1,semi2,final]};}
-export function finishSeason(g){if(g.history.length&&g.history.at(-1).season===g.season)return g;const tables=[0,1,2,3].map(d=>standings(g,d));const promote=[[],[],[],[]],relegate=[[],[],[],[]],playoffs={};for(let d=1;d<=3;d++){const count=d===3?3:2;promote[d]=tables[d].slice(0,count).map(x=>x.id);const eligible=tables[d].slice(count,count+4).map(x=>x.id);const po=playoffWinner(g,eligible,g.seed+g.season*17+d*1103);playoffs[d]=po;promote[d].push(po.winner);}relegate[0]=tables[0].slice(-3).map(x=>x.id);relegate[1]=tables[1].slice(-3).map(x=>x.id);relegate[2]=tables[2].slice(-4).map(x=>x.id);const summary={season:g.season,tables:tables.map(t=>t.map(x=>({...x}))),promote,relegate,playoffs,cupWinners:Object.fromEntries(Object.entries(g.cups).map(([name,c])=>[name,c.winner]))};g.history.push(summary);for(const c of g.clubs){const rank=tables[c.division].findIndex(x=>x.id===c.id)+1,award=seasonRevenue(g,c,rank);c.money+=award;c.budget=Math.max(0,c.budget+Math.round(award*.17));if(c.id===g.selected){g.financeLedger??=[];g.financeLedger.unshift({season:g.season,week:46,clubId:c.id,type:'SEASON DISTRIBUTION',amount:award,note:`${DIV_NAMES[c.division]} finish: ${rank}${rank===1?'st':'th'}; prize and league distribution`});}}if(g.manager?.employed){
+export function finishSeason(g){if(g.history.length&&g.history.at(-1).season===g.season)return g;const tables=[0,1,2,3].map(d=>standings(g,d));const promote=[[],[],[],[]],relegate=[[],[],[],[]],playoffs={};for(let d=1;d<=3;d++){const count=d===3?3:2;promote[d]=tables[d].slice(0,count).map(x=>x.id);const eligible=tables[d].slice(count,count+4).map(x=>x.id);const po=playoffWinner(g,eligible,g.seed+g.season*17+d*1103);playoffs[d]=po;promote[d].push(po.winner);}relegate[0]=tables[0].slice(-3).map(x=>x.id);relegate[1]=tables[1].slice(-3).map(x=>x.id);relegate[2]=tables[2].slice(-4).map(x=>x.id);const summary={season:g.season,tables:tables.map(t=>t.map(x=>({...x}))),promote,relegate,playoffs,cupWinners:Object.fromEntries(Object.entries(g.cups).map(([name,c])=>[name,c.winner]))};archiveSeasonEdition(g,summary);const managerChanges=closeManagerSeason(g,summary);summary.managerChanges=managerChanges;g.history.push(summary);for(const change of managerChanges){const item=addStory(g,'press','A NEW FACE IN THE DUGOUT',`${change.club} have appointed ${change.name} for the ${change.season}–${String(change.season+1).slice(-2)} season, replacing ${change.previous} ${change.reason}.`);item.managerChange=change.clubId;}for(const c of g.clubs){const rank=tables[c.division].findIndex(x=>x.id===c.id)+1,award=seasonRevenue(g,c,rank);c.money+=award;c.budget=Math.max(0,c.budget+Math.round(award*.17));if(c.id===g.selected){g.financeLedger??=[];g.financeLedger.unshift({season:g.season,week:46,clubId:c.id,type:'SEASON DISTRIBUTION',amount:award,note:`${DIV_NAMES[c.division]} finish: ${rank}${rank===1?'st':'th'}; prize and league distribution`});}}if(g.manager?.employed){
  const rec=ensureCareerRecord(g),id=g.manager.clubId,div=g.clubs[id].division;
  const rank=tables[div].findIndex(x=>x.id===id)+1;
  const add=(type,title)=>{if(!rec.honours.some(x=>x.season===g.season&&x.clubId===id&&x.title===title))rec.honours.push({season:g.season,clubId:id,type,title});};
@@ -598,8 +601,11 @@ export function finishSeason(g){if(g.history.length&&g.history.at(-1).season===g
  if(div>0&&promote[div].includes(id))add('promotion','Promoted from '+DIV_NAMES[div]);
  for(const [name,winner] of Object.entries(summary.cupWinners))if(winner===id)add('cup',name+' winners');
  }
- g.messages.unshift('Season complete! Promotions and relegations decided. See the Season Review.');return g;}
-export function newSeason(g){if(g.status!=='finished')throw Error('Finish the season first');const h=g.history.at(-1);for(let d=1;d<=3;d++)for(const id of h.promote[d])g.clubs[id].division=d-1;for(let d=0;d<=2;d++)for(const id of h.relegate[d])g.clubs[id].division=d+1;developPlayers(g);g.season++;youthIntake(g);g.round=0;g.status='active';g.results=[];g.lastMatch=null;g.lastCupMatch=null;refreshFixtures(g);g.cups={'FA Cup':initialiseCup(g,'FA Cup'),'League Cup':initialiseCup(g,'League Cup')};for(const c of g.clubs){c.budget=Math.max(10000,c.budget+Math.round(c.money*.08));for(const p of c.squad){p.fitness=100;p.injured=0;p.morale=Math.max(35,Math.min(85,(p.morale??70)+5));}c.lineup=autoLineup(c);}g.matchReports=[];g.messages.unshift('A new season begins with fresh fixtures!');addStory(g,'chairman','A NEW CAMPAIGN BEGINS',`The ${g.season}–${String(g.season+1).slice(-2)} season is upon us. The board expects a fresh effort from everyone at ${g.clubs[g.selected].name}.`);ensureStory(g).lastWeekKey=null;if(g.manager)g.manager.lastReviewWeek=-1;return g;}
+ g.messages.unshift('Season complete! Promotions and relegations decided. See the Season Review.');const edition=summary.edition;if(edition&&!ensureStory(g).items.some(x=>x.seasonEdition===g.season)){const item=addStory(g,'press',edition.headline,edition.articles.map(x=>x.heading+'\n'+x.body).join('\n\n'));item.seasonEdition=g.season;}return g;}
+export function newSeason(g){if(g.status!=='finished')throw Error('Finish the season first');const h=g.history.at(-1);for(let d=1;d<=3;d++)for(const id of h.promote[d])g.clubs[id].division=d-1;for(let d=0;d<=2;d++)for(const id of h.relegate[d])g.clubs[id].division=d+1;// Retain rivalry results when the new league season resets g.results.
+ g.rivalryHistory??=[];
+ for(const r of g.results||[])if(rivalryFor(g,r.home,r.away))g.rivalryHistory.push({season:g.season,home:r.home,away:r.away,hg:r.hg,ag:r.ag});
+ developPlayers(g);g.season++;const summerCompleted=completeSummerProjects(g);youthIntake(g);g.round=0;g.status='active';g.results=[];g.lastMatch=null;g.lastCupMatch=null;refreshFixtures(g);g.cups={'FA Cup':initialiseCup(g,'FA Cup'),'League Cup':initialiseCup(g,'League Cup')};for(const c of g.clubs){c.budget=Math.max(10000,c.budget+Math.round(c.money*.08));for(const p of c.squad){p.fitness=100;p.injured=0;p.morale=Math.max(35,Math.min(85,(p.morale??70)+5));}c.lineup=autoLineup(c);}g.matchReports=[];g.messages.unshift('A new season begins with fresh fixtures!');for(const item of summerCompleted){if(item.club.id===g.selected){g.messages.unshift(`${item.record.name} completed during the close season. Capacity now ${item.record.capacity.toLocaleString('en-GB')}.`);addStory(g,'press','NEW SEASON, NEW-LOOK GROUND',`${item.club.name} begin the new campaign with ${item.record.name.toLowerCase()} complete.`);}}addStory(g,'chairman','A NEW CAMPAIGN BEGINS',`The ${g.season}–${String(g.season+1).slice(-2)} season is upon us. The board expects a fresh effort from everyone at ${g.clubs[g.selected].name}.`);ensureStory(g).lastWeekKey=null;if(g.manager)g.manager.lastReviewWeek=-1;return g;}
 // Manager appointments and transfers are fictional simulation mechanics, not reconstructed historical negotiations.
 export function updateManager(g){
  if(!g.manager)g.manager={clubId:g.selected,reputation:45,security:65,employed:true,offers:[],applications:[],career:[],lastReviewWeek:-1};
@@ -751,7 +757,7 @@ export function transact(g,id,action,targetId=null){
  const entry={season:g.season,week:g.round,player:p.name,playerId:p.id,from:from?.name||'Free Agents',to:to?.name||'Free Agents',fee:action==='buy'&&!from?0:p.value};
  g.transferHistory??=[];g.transferHistory.unshift(entry);g.messages.unshift(`TRANSFER: ${entry.player} · ${entry.from} → ${entry.to} (${entry.fee.toLocaleString('en-GB')} GBP)`);addStory(g,'scout',action==='buy'?'SCOUT REPORT: NEW ARRIVAL':'TRANSFER DEPARTURE',`${entry.player} has moved from ${entry.from} to ${entry.to} for £${entry.fee.toLocaleString('en-GB')}.`);return entry;
 }
-export function upgradeSave(g){if(g.version===3){for(const p of g.clubs.flatMap(c=>c.squad).concat(g.freeAgents||[]))enrichPlayer(p,g.seed);ensureStaff(g);ensureStory(g);ensureCareerRecord(g);return g;}if(g.version!==2||g.clubs?.length!==92)throw Error('Unsupported save');g.version=3;g.manager={clubId:g.selected,reputation:45,security:65,employed:true,offers:[],applications:[],career:[],lastReviewWeek:-1};g.transferHistory=[];g.matchReports=[];ensureStaff(g);ensureStory(g);ensureCareerRecord(g);return g;}
+export function upgradeSave(g){if(g.version===3){for(const p of g.clubs.flatMap(c=>c.squad).concat(g.freeAgents||[]))enrichPlayer(p,g.seed);ensureStaff(g);ensureStory(g);ensureCareerRecord(g);for(const c of g.clubs){ensureSupporters(g,c);ensureGround(c);}return g;}if(g.version!==2||g.clubs?.length!==92)throw Error('Unsupported save');g.version=3;g.manager={clubId:g.selected,reputation:45,security:65,employed:true,offers:[],applications:[],career:[],lastReviewWeek:-1};g.transferHistory=[];g.matchReports=[];ensureStaff(g);ensureStory(g);ensureCareerRecord(g);for(const c of g.clubs){ensureSupporters(g,c);ensureGround(c);}return g;}
 
 export function sortLeagueRows(rows,sort='pts',order='desc',query=''){
  const filtered=rows.map((r,i)=>({...r,rank:i+1,gd:r.gf-r.ga})).filter(r=>r.name.toLowerCase().includes(query.toLowerCase().trim()));

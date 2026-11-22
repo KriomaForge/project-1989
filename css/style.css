@@ -103,3 +103,89 @@
 
 /* v1.9.6: selectable league club names and read-only squad inspection */
 .league-club-link{display:inline-flex;align-items:center;gap:.3rem;background:transparent;border:0;padding:.25rem;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;text-decoration:underline;text-decoration-color:#608c52;text-underline-offset:3px;cursor:pointer}.league-club-link:hover,.league-club-link:focus-visible{color:#ffdf83;outline:2px solid #ffdf83;outline-offset:2px}.club-squad-table th:nth-child(n+3),.club-squad-table td:nth-child(n+3){text-align:right}
+
+/* Project 1989 v1.10 — six-drawer Manager's Desk. Original notebook remains unchanged. */
+.desk-toolbar{display:flex;align-items:stretch;flex-wrap:wrap;gap:6px;margin:5px 0 17px;padding:8px;border:2px solid #beab78;background:#0e251e;box-shadow:0 5px 0 #07130f}
+.desk-toolbar button{flex:1 1 auto;min-height:42px;background:#213e70;border:2px solid #b6a477;border-radius:2px;color:#f8e5ac;font:800 11px 'Courier New',monospace;letter-spacing:.025em;padding:8px 11px;white-space:nowrap}
+.desk-toolbar button.active,.desk-toolbar button:hover{background:#f1d69a;color:#192d50}
+.desk-toolbar .desk-toolbar-more{background:#3a3932;color:#f1dfbb}
+.manager-desk-shell{max-width:1150px;margin:0 auto 26px;font-family:'Courier New',monospace}
+.manager-desk-shell .club-label{color:#f4dfaa}
+.desk-briefing{max-width:950px;margin:0 auto 19px;border:3px double #dbbc75;background:#e8ddbd;color:#172d4f;box-shadow:5px 5px #071713}
+.desk-briefing-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:9px 13px;border-bottom:2px solid #b9a778;font:900 14px 'Courier New',monospace;letter-spacing:.05em}
+.desk-briefing-head span{font-size:10px;font-weight:700;letter-spacing:0}
+.desk-briefing-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.desk-briefing-grid button{display:flex;flex-direction:column;gap:7px;text-align:left;min-width:0;border:0;border-right:1px dashed #a3926f;background:transparent;color:#152e52;padding:11px 12px;min-height:83px;border-radius:0;font-family:'Courier New',monospace}
+.desk-briefing-grid button:last-child{border-right:0}
+.desk-briefing-grid button:hover,.desk-briefing-grid button:focus-visible{background:#d6c79f;outline:2px solid #183b77;outline-offset:-2px}
+.desk-briefing-grid small{font-size:10px;font-weight:900;color:#59627a}
+.desk-briefing-grid strong{font-size:13px;line-height:1.3;overflow-wrap:anywhere}
+.manager-desk-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:950px;border-radius:7px;padding:15px;gap:12px}
+.manager-desk-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:130px;padding:15px 10px;border:3px solid #c5b275;background:#214d7a;box-shadow:3px 5px 0 #0a1816;color:#fff;text-align:center;font-family:'Courier New',monospace;cursor:pointer}
+.manager-desk-tile:hover,.manager-desk-tile:focus-visible{filter:brightness(1.16);outline:3px solid #f5dfa2;outline-offset:2px}
+.manager-desk-tile.chosen{background:#ead29e;color:#122e57;border-color:#fff5c9;box-shadow:inset 0 0 0 2px #214179,3px 5px 0 #091716}
+.manager-desk-tile strong{font-size:14px;font-weight:900;line-height:1.25;letter-spacing:.045em}
+.manager-desk-tile small{font-size:11px;line-height:1.35;opacity:.92}
+.manager-desk-icon{font-size:28px;line-height:1}
+.manager-desk-drawer{max-width:950px;margin:16px auto 5px;padding:16px;border:5px solid #1d4d9a;box-shadow:0 6px 0 #081b46;background:repeating-linear-gradient(0deg,#efe5cb 0,#efe5cb 27px,#d9d1b8 28px);color:#18365d}
+.manager-desk-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 2px 9px;border-bottom:2px solid #1e3b72;font:900 15px 'Courier New',monospace}
+.manager-desk-drawer-head small{font-size:10px}
+.manager-desk-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}
+.desk-drawer-link{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;background:#e0d1ae;color:#1b3864;border:1px solid #a89977;border-left:5px solid #274e89;border-radius:0;padding:10px 13px;font-family:'Courier New',monospace}
+.desk-drawer-link:hover,.desk-drawer-link:focus-visible{background:#d0bb90;color:#0d244a;outline:2px solid #234a8b;outline-offset:0}
+.desk-drawer-link span:first-child{display:flex;flex-direction:column;gap:3px}
+.desk-drawer-link strong{font-size:12px}
+.desk-drawer-link small{font-size:11px}
+.desk-drawer-link span:last-child{font-size:22px}
+@media(max-width:750px){.desk-toolbar button{flex:1 1 27%;font-size:10px;padding:7px 5px}.desk-briefing-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.desk-briefing-grid button{border-bottom:1px dashed #a3926f}.manager-desk-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.manager-desk-tile{min-height:118px}.manager-desk-links{grid-template-columns:1fr}}
+@media(max-width:440px){.desk-toolbar button{flex-basis:38%;min-height:40px}.manager-desk-tile{min-height:115px;padding:9px 5px}.manager-desk-tile strong{font-size:11px}.manager-desk-tile small{font-size:10px}.desk-briefing-grid strong{font-size:11px}}
+
+/* v1.11: press clippings and fictional rival-manager dossiers, keeping paper atmosphere */
+.press-article p{font-family:inherit;line-height:1.6;margin:.65em 0 1em;white-space:normal;}
+.press-article p:first-child{font-weight:700;border-bottom:1px solid #a7a18c;padding-bottom:.6em;}
+.rival-manager-card{background:#f1e8cb;color:#263c56;border:2px solid #233e60;box-shadow:2px 3px 0 #988d71;padding:10px 14px;margin:12px 0;font-family:'Courier New',monospace;display:flex;flex-direction:column;gap:5px;}
+.rival-manager-card span{font-size:.82rem;}
+.rivalry-headline{font-family:'Courier New',monospace;background:#efe4c6;color:#162f49;border:2px solid #1e3d5e;padding:12px;margin:10px 0;font-weight:bold;}
+.rivalry-headline button{margin-left:12px;}
+
+/* The Football League Gazette: a newspaper pulled from the manager's notebook. */
+.season-review-edition {margin:1.1rem 0}
+.season-special{background:#f1e4c4;color:#252820;border:3px double #283d51;padding:clamp(14px,3vw,30px);box-shadow:inset 0 0 0 4px #f1e4c4, 0 4px 14px #0002;font-family:Georgia,'Times New Roman',serif;line-height:1.5}
+.season-special-masthead{text-align:center;color:#203b54;letter-spacing:.07em;font-size:clamp(1.18rem,3vw,2rem);font-weight:900;border-top:3px solid #203b54;border-bottom:3px double #203b54;padding:.35em 0}
+.season-special-kicker{text-align:center;font:700 .76rem 'Courier New',monospace;letter-spacing:.06em;margin:1rem 0;color:#4c473d}
+.season-special h2{text-align:center;font-size:clamp(1.35rem,3.2vw,2.3rem);line-height:1.15;color:#212b30;margin:.7em 0}
+.season-special-subtitle{text-align:center;border-bottom:1px solid #8b8068;padding-bottom:1rem;font-style:italic}
+.season-special-article{margin:1.15rem 0;border-bottom:1px solid #b4a88d;padding-bottom:.8rem;break-inside:avoid}
+.season-special-article h3{font:700 .82rem 'Courier New',monospace;color:#253e54;letter-spacing:.045em;text-transform:uppercase;margin:0 0 .45rem}
+.season-special-article p{margin:.2em 0}
+.season-special-footer{text-align:center;margin-top:1.2rem;font:700 .72rem 'Courier New',monospace;letter-spacing:.06em;color:#29445c}
+.edition-archive{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-bottom:1rem}.edition-archive button{font-size:.8rem}.selected-edition{outline:2px solid #a88239}
+.season-archive-facts{margin:1rem 0}.season-archive-facts summary{cursor:pointer;font-weight:bold}
+
+/* v1.13 — archival scrapbook cuttings; original ring-bound notebook retained. */
+.scrapbook-clippings{display:flex;flex-direction:column;gap:13px;max-height:660px;overflow-y:auto;padding:10px 4px}
+.scrapbook-clipping{position:relative;background:#f7ebcd;border:1px solid #c0ad88;box-shadow:2px 3px 0 #b9aa87;padding:12px 14px;transform:rotate(-.25deg);color:#29384b}
+.scrapbook-clipping:nth-child(even){transform:rotate(.35deg);background:#f9eed6}
+.scrapbook-clipping small{font:700 10px 'Courier New',monospace;color:#5b574e;letter-spacing:.07em}
+.scrapbook-clipping h3{font:700 15px Georgia,serif;text-transform:uppercase;line-height:1.25;margin:7px 0;color:#253e54}
+.scrapbook-clipping p{font:13px/1.45 Georgia,serif;color:#484132;margin:0}
+.scrapbook-picture{margin:12px 0;min-height:88px;background:#efe6d1;border:2px dashed #8b836f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;padding:10px;color:#505e69}
+.scrapbook-picture span{font-size:25px}.scrapbook-picture small{font-size:10px;max-width:210px}
+
+/* v1.13.1: three editorial voices, same recorded facts. */
+.edition-voices{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 .8rem}.edition-voices button{font-size:.78rem;flex:1 1 145px}.season-special-fans{border-color:#854432}.season-special-fans .season-special-masthead{color:#854432;border-color:#854432}.season-special-regional{border-color:#465c52}.season-special-regional .season-special-masthead{color:#465c52;border-color:#465c52}
+
+/* v1.14 Ground File. Existing ring-bound notebook styles are preserved. */
+.ground-art,.ground-directory,.scrapbook-ground-mini{border:3px double #7d745f;background:#d8d0bd;margin:10px 0;padding:5px;color:#233e53}.ground-art svg,.ground-directory svg,.scrapbook-ground-mini svg{width:100%;height:auto;display:block}.ground-art svg{max-height:300px}.ground-directory svg{max-height:225px}.scrapbook-ground-mini{margin-top:15px;text-align:center}.scrapbook-ground-mini small{font:10px/1.4 'Courier New',monospace;display:block;margin:7px;color:#28405a}.scrapbook-ground-mini button{font-size:11px;margin:6px}.book-page #groundclub{width:100%;max-width:100%;background:#f6edd9;color:#203755;border:1px solid #8291a5;padding:7px;font:700 12px 'Courier New',monospace}.ground-directory{margin-top:12px}.ground-svg{image-rendering:auto;max-width:100%}.book-page .ground-art+.book-small{font-size:11px}
+
+/* v1.17 — period matchday programme: bold single-colour printing, minimal controls. */
+.programme-cover{--programme-primary:#a13737;--programme-secondary:#e9d5a6;background:#f3e4c0;color:#1a2936;border:2px solid #283d55;min-height:520px;max-width:440px;margin:10px auto;padding:12px;position:relative;text-align:center;box-shadow:3px 4px 0 #ae9f85}
+.programme-overline{font:700 10px/1.4 'Courier New',monospace;letter-spacing:.7px;border-bottom:3px solid #263d50;padding-bottom:5px}
+.programme-cover-head{font:900 clamp(34px,5vw,52px)/.92 Impact,'Arial Narrow',sans-serif;letter-spacing:-1px;color:var(--programme-primary);padding:13px 0 9px;text-transform:uppercase}
+.programme-stripe{background:var(--programme-primary);color:#fff1cd;padding:12px 5px;display:flex;justify-content:space-around;align-items:center;gap:5px;font:900 15px/1.3 'Arial Narrow',sans-serif;text-transform:uppercase}.programme-stripe b{font:italic 24px Georgia,serif}
+.programme-roundel{width:100px;height:100px;border:5px double #273d54;border-radius:50%;margin:14px auto;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--programme-primary);font:900 19px Georgia,serif}.programme-roundel span{font-size:19px}
+.programme-cover-ground{border:2px solid #3b4350;margin-top:8px;background:#d3cab2}.programme-cover-ground svg{width:100%;height:145px;display:block}.programme-cover-foot{font:700 12px/1.5 'Courier New',monospace;border-top:2px solid #263d54;padding:9px 0 0;margin-top:9px}
+.programme-teams{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.programme-teams>div{min-width:0;border:1px solid #b2a387;padding:7px;background:#f5ead0}.programme-teams strong{display:block;border-bottom:1px solid #8a806d;margin-bottom:5px;font-size:11px}.programme-teams span{display:block;font-size:10px;padding:2px 0;overflow-wrap:anywhere}.programme-teams small{color:#5c5a54}.programme-archive-list{display:flex;flex-direction:column;gap:4px;margin-top:5px}.programme-archive-button{font-size:10px!important;text-align:left!important;white-space:normal!important}
+
+/* Compact build metadata rather than another major desk tile */
+.desk-toolbar .build-sources-link,.build-welcome-link a{font-family:Courier New,monospace;font-size:10px;letter-spacing:.04em;color:#314c68;text-decoration:underline;text-underline-offset:3px;white-space:nowrap;padding:5px 8px;align-self:center}.build-welcome-link{text-align:right;padding:4px 2px 9px}.desk-toolbar .build-sources-link:hover{color:#14293b}

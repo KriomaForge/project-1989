@@ -1,3 +1,24 @@
+## v1.20.0
+Persistent opposition-manager careers, turnover and coverage; includes v1.19 editorial engine.
+## v1.16.1 — Ground works and summer building
+- Clearer notebook ground pages, visible completed stands, choice of immediate or summer building, matchday loss during active works, and 15% discounted summer construction.
+
+## v1.14.0 — The Football Ground (beta)
+- 92 deterministic club-colour-aware Subbuteo-inspired illustrated grounds; ring-bound Ground File, day/night floodlight views and directory.
+- Ground scene added to scrapbook; no gameplay/economy changes, saves unchanged.
+- Historic ground names are provisional pending research; capacity and stands illustrative only.
+- Editorial variety and creative-writing roadmap extended.
+
+## v1.11.2 — Rivalry Files & Managerial Memory
+- Persistent derby archives across seasons, personal rival-manager head-to-head records, revenge and streak-based press reports, and a Rivalry File inside League Records.
+- 130/130 tests passed; 46-week rollover checked in historical and PES-style modes.
+
+## v1.10.0 beta 1 — The Manager’s Desk
+- Six retro stadium desk sections replace 12 menu tiles and the 16-tab navigation strip.
+- Saturday briefing: fixture, position, board confidence, postbag.
+- Quick-navigation bar and notebook-styled destination drawers; every original screen retained.
+- No save schema or gameplay engine changes.
+
 ## v1.9.2 — Football worlds research preview
 - Three separate new-career modes; historic data caveats explicitly visible.
 - Original generative fictional English club league option.
@@ -191,3 +212,24 @@
 - Curated initial skill and development-potential ratings for 33 researched player names, explicitly subjective, not historical statistics.
 - PES-inspired mode maps clubs to documented PES English team aliases where available, with original generated names for others.
 - No save-version bump: existing careers remain unchanged, new careers use the updated profile data.
+
+## 1.13.1 — The Three Voices of Football
+- Three end-of-season newspaper editions: national, supporters and regional.
+- Regional coverage includes non-rival neighbouring clubs across divisions.
+- Persistent organic regional and cross-regional title rivalries from competitive results.
+- Distinct voices in season archive and Manager's Scrapbook; compatible with older saves.
+
+## v1.16.0 — Ground Improvements
+- Buildable stands, terraces, roofing, facilities, pitch drainage and floodlights, with capacity, matchday and upkeep effects.
+- Named historic grounds and clean exact in-game capacity display.
+
+## v1.17.0 — Matchday Programmes & Ground Memories
+- Introduced original retro home-match programmes with club-colour covers, ground illustration, visitor notes, predicted teams and league context.
+- Notable home fixtures produce lasting programme keepsakes and entries in the manager's scrapbook.
+- Archived programmes preserve the stadium state, line-ups, league positions and match result as they were that season.
+- Added 5 new automated programme/archive tests; 165/165 total passing.
+- Completed 112 seeded whole-season simulations across twelve clubs, multiple ticket policies, ground-development scenarios and the PES-style world. Details in `simulation/v117-large-audit.*`.
+
+## v1.18.0 — Under the Floodlights
+- Programme PNG/PDF exports and scrapbook collection.
+- Ground-aware match-highlight appearance and match-time venue snapshots.
